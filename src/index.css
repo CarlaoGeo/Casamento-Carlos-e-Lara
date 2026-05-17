@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap');
+
+:root {
+  --verde-folha: #5a7258; /* Inspirado na aquarela do manual */
+  --verde-claro: #8ba388;
+  --cinza-texto: #4a4a4a;
+  --fundo: #fbfaf8; /* Um branco levemente "quente" */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: var(--fundo);
+  color: var(--cinza-texto);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1, h2, h3 {
+  font-family: 'Playfair Display', serif;
+  color: var(--verde-folha);
+}
+
