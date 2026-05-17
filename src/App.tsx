@@ -1,6 +1,7 @@
 import React, { useState, useRef,  useEffect } from 'react'; 
 import './index.css';
 import { listaPresentes } from './assets/listadepresentes';
+import imagemFolhas from './assets/folhas_fundo.png';
 
 
 function TimerCasamento() {
@@ -84,8 +85,8 @@ function App() {
     <div style={styles.container}>
       
       {/*FLORES NAS BORDAS */}
-      <img src={`${import.meta.env.BASE_URL}folhas_fundo.png`} alt="Folhas" style={styles.florTopoEsq} />
-      <img src={`${import.meta.env.BASE_URL}folhas_fundo.png`} alt="Folhas" style={styles.florBaseDir} />
+      <img src={imagemFolhas} alt="Folhas" style={styles.florTopoEsq} />
+      <img src={imagemFolhas} alt="Folhas" style={styles.florBaseDir} />
 
       {/* SEÇÃO HERO */}
       <header style={styles.hero}>
