@@ -112,12 +112,7 @@ function App() {
         >
           Lista de Presença
         </button>
-        <button 
-          style={secaoAtiva === 'mapa' ? styles.botaoAtivo : styles.botao} 
-          onClick={() => mudarSecao('mapa')}
-        >
-          Mapa de Mesas
-        </button>
+        
         <button 
           style={secaoAtiva === 'pedidos' ? styles.botaoAtivo : styles.botao} 
           onClick={() => mudarSecao('pedidos')}
