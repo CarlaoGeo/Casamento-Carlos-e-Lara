@@ -1,8 +1,9 @@
 import qrJantar from './qrcode/jantar_sebastiao.png';
 import pixsemvalor from './qrcode/pix_sem_valor.png';
-import pixdez from './qrcode/pix_dez.png';
+//import pixdez from './qrcode/pix_dez.png';
 import euchorando from './imagens/eu_chorando.png';
 import razao from './imagens/razao.jpeg';
+import pixcinquenta from './qrcode/pixcinquenta.png';
 
 export const listaPresentes = [
     {
@@ -36,11 +37,10 @@ export const listaPresentes = [
     id: 4,
     titulo: "Cobertor para a noiva estar sempre coberta de razão!",
     descricao: "Ela sempre tem razão.",
-    valor: "R$ 10,00",
+    valor: "R$ 50,00",
     imagem: razao,
-    qrCode: pixdez,
+    qrCode: pixcinquenta,
     chavePix: "carlosedulc17077@gmail.com"
     },
-
   ];
   

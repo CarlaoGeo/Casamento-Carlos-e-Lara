@@ -68,6 +68,7 @@ function App() {
   const menuRef = useRef<HTMLElement>(null);
   const [presenteSelecionado, setPresenteSelecionado] = useState<any>(null);
   const linkformulario = "https://forms.gle/hinc6dktKy2Uq3qNA";
+  const [copiado, setCopiado] = useState(false);
 
   const mudarSecao = (secao: string) => {
     setSecaoAtiva(secao);
@@ -78,6 +79,24 @@ function App() {
       }
     }, 100);
   };
+
+  const copiarChave = () => {
+    if (presenteSelecionado && presenteSelecionado.chavePix) {
+      navigator.clipboard.writeText(presenteSelecionado.chavePix);
+      setCopiado(true);
+      
+      // Volta o botão ao normal após 2 segundos
+      setTimeout(() => {
+        setCopiado(false);
+      }, 2000);
+    }
+  };
+
+  const fecharModal = () => {
+    setPresenteSelecionado(null);
+    setCopiado(false);
+  };
+  
 
   
 
@@ -224,10 +243,10 @@ function App() {
       </main>
       {/* POP-UP / MODAL DO PIX */}
       {presenteSelecionado && (
-        <div style={styles.modalOverlay} onClick={() => setPresenteSelecionado(null)}>
+        <div style={styles.modalOverlay} onClick={fecharModal}>
           {/* O e.stopPropagation() impede que clicar DENTRO da caixa feche ela */}
           <div style={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-            <button style={styles.btnFechar} onClick={() => setPresenteSelecionado(null)}>X</button>
+            <button style={styles.btnFechar} onClick={fecharModal}>X</button>
             <h3 style={styles.modalTitulo}>{presenteSelecionado.titulo}</h3>
             <p style={styles.modalValor}>{presenteSelecionado.valor}</p>
             
@@ -242,7 +261,13 @@ function App() {
             
             <p style={{fontSize: '0.9rem', marginBottom: '15px'}}>Ou copie a chave PIX abaixo:</p>
             <div style={styles.chavePixBox}>
-              <span style={{fontWeight: 'bold', userSelect: 'all'}}>{presenteSelecionado.chavePix}</span>
+              <span style={styles.chaveTexto}>{presenteSelecionado.chavePix}</span>
+              <button 
+                style={copiado ? styles.btnCopiarAtivo : styles.btnCopiar} 
+                onClick={copiarChave}
+              >
+                {copiado ? 'Copiado! ✓' : '📋'}
+              </button>
             </div>
           </div>
         </div>
@@ -570,8 +595,42 @@ const styles: { [key: string]: React.CSSProperties } = {
     padding: '10px',
     borderRadius: '8px',
     border: '1px solid #ddd',
-    wordBreak: 'break-all', // Quebra a chave Pix se for muito grande para a tela
+    display: 'flex', // Isso faz o botão e o texto ficarem lado a lado
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: '10px',
+    wordBreak: 'break-all', 
     fontSize: 'clamp(0.8rem, 2.5vw, 1rem)',
+    textAlign: 'left',
+  },
+  chaveTexto: {
+    fontWeight: 'bold',
+    userSelect: 'all',
+    flex: 1, // Faz a chave ocupar o espaço vazio empurrando o botão para a ponta
+  },
+  
+  btnCopiar: {
+    backgroundColor: 'var(--verde-folha)',
+    color: '#fff',
+    border: 'none',
+    padding: '8px 12px',
+    borderRadius: '6px',
+    cursor: 'pointer',
+    fontWeight: 'bold',
+    fontSize: '0.8rem',
+    flexShrink: 0, // Impede que o botão encolha se a chave for muito grande
+    transition: '0.3s',
+  },
+  btnCopiarAtivo: {
+    backgroundColor: 'var(--verde-claro)', // Muda de cor quando clicado
+    color: '#fff',
+    border: 'none',
+    padding: '8px 12px',
+    borderRadius: '6px',
+    cursor: 'default',
+    fontWeight: 'bold',
+    fontSize: '0.8rem',
+    flexShrink: 0,
   }
 };
 
