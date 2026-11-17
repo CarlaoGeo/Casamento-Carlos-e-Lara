@@ -69,6 +69,17 @@ function App() {
   const [presenteSelecionado, setPresenteSelecionado] = useState<any>(null);
   const linkformulario = "https://forms.gle/hinc6dktKy2Uq3qNA";
   const [copiado, setCopiado] = useState(false);
+  const [imagemAmpliada, setImagemAmpliada] = useState<{ src: string; alt: string } | null>(null);
+
+  // Fecha a imagem ampliada com a tecla Esc
+  useEffect(() => {
+    if (!imagemAmpliada) return;
+    const aoApertarTecla = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setImagemAmpliada(null);
+    };
+    window.addEventListener('keydown', aoApertarTecla);
+    return () => window.removeEventListener('keydown', aoApertarTecla);
+  }, [imagemAmpliada]);
 
   const mudarSecao = (secao: string) => {
     setSecaoAtiva(secao);
@@ -223,7 +234,13 @@ function App() {
               {/* DEMAIS ITENS: LISTA VIA PIX */}
               {listaPresentes.map((presente) => (
                 <div key={presente.id} style={styles.cardPresente}>
-                  <img src={presente.imagem} alt={presente.titulo} style={styles.imgPresente} />
+                  <img
+                    src={presente.imagem}
+                    alt={presente.titulo}
+                    title="Clique para ampliar"
+                    style={{ ...styles.imgPresente, cursor: 'zoom-in' }}
+                    onClick={() => setImagemAmpliada({ src: presente.imagem, alt: presente.titulo })}
+                  />
                   <div style={styles.cardPresenteConteudo}>
                     <h3 style={styles.tituloPresente}>{presente.titulo}</h3>
                     <p style={styles.descPresente}>{presente.descricao}</p>
@@ -271,7 +288,27 @@ function App() {
             </div>
           </div>
         </div>
-      )}  
+      )}
+
+      {/* IMAGEM AMPLIADA DO PRESENTE */}
+      {imagemAmpliada && (
+        <div style={styles.lightboxOverlay} onClick={() => setImagemAmpliada(null)}>
+          <button
+            style={styles.lightboxFechar}
+            onClick={() => setImagemAmpliada(null)}
+            aria-label="Fechar imagem"
+          >
+            ✕
+          </button>
+          <img
+            src={imagemAmpliada.src}
+            alt={imagemAmpliada.alt}
+            style={styles.lightboxImagem}
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
+
       <footer style={{padding: '40px', textAlign: 'center', fontSize: '0.8rem', opacity: 0.6, zIndex: 1}}>
         Carlos & Lara © 2027
       </footer>
@@ -631,6 +668,44 @@ const styles: { [key: string]: React.CSSProperties } = {
     fontWeight: 'bold',
     fontSize: '0.8rem',
     flexShrink: 0,
+  },
+
+  // ESTILOS DA IMAGEM AMPLIADA
+  lightboxOverlay: {
+    position: 'fixed',
+    top: 0, left: 0, right: 0, bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.85)',
+    zIndex: 1000,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: '15px',
+    boxSizing: 'border-box',
+    cursor: 'zoom-out',
+  },
+  lightboxImagem: {
+    maxWidth: '100%',
+    maxHeight: '90vh',
+    objectFit: 'contain', // Mostra a foto inteira, sem cortar
+    borderRadius: '10px',
+    boxShadow: '0 10px 40px rgba(0,0,0,0.4)',
+    cursor: 'default',
+  },
+  lightboxFechar: {
+    position: 'absolute',
+    top: '15px',
+    right: '15px',
+    width: '40px',
+    height: '40px',
+    borderRadius: '50%',
+    border: 'none',
+    backgroundColor: 'rgba(255,255,255,0.9)',
+    color: '#333',
+    fontSize: '1.2rem',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 };
 
